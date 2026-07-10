@@ -1,0 +1,216 @@
+# =============================================================================
+# Chartres Cathedral Stained Glass — GraphQL Schema
+# =============================================================================
+# This schema powers a virtual tour of the cathedral's stained glass
+# collection. Visitors can query panels by location, color, century, and
+# light conditions, subscribe to illumination events, and submit
+# conservation reports.
+# =============================================================================
+
+# ─── Directives ────────────────────────────────────────────────────────────
+
+"""
+Marks a field as requiring special restoration permissions.
+Access is granted via the `RESTORER` role only.
+"""
+directive @restricted(
+  role: String! = "RESTORER"
+  reason: String
+) on FIELD_DEFINITION | OBJECT
+
+"""
+Indicates that a field or enum value is deprecated along with a
+migration hint for consumers.
+"""
+directive @deprecated(
+  reason: String! = "No longer supported"
+) on FIELD_DEFINITION | ENUM_VALUE | INPUT_FIELD_DEFINITION
+
+# ─── Scalars ──────────────────────────────────────────────────────────────
+
+scalar DateTime
+scalar HexColor
+scalar JSON
+scalar PositiveInt
+
+# ─── Enums ─────────────────────────────────────────────────────────────────
+
+enum GlassColor {
+  CHART_RES_BLUE
+  DEEP_AZURE
+  RUBY_RED
+  AMBER_GOLD
+  EMERALD_GREEN
+  AMETHYST_PURPLE
+  GRISAILLE_WHITE
+  @deprecated(reason: "Grisaille is being phased out; use SILVER_STAIN instead")
+  SILVER_STAIN
+}
+
+enum LightCondition {
+  MORNING
+  NOON
+  DUSK
+  NIGHT
+}
+
+enum PanelEra {
+  ROMANESQUE       # 12th century
+  GOTHIC_EARLY     # 13th century
+  GOTHIC_HIGH      # 14th century
+  GOTHIC_LATE      # 15th century
+  RENAISSANCE      # 16th century
+  MODERN           # 20th–21st centuries
+}
+
+# ─── Interfaces ───────────────────────────────────────────────────────────
+
+"""Any element of the cathedral that can be illuminated by natural light."""
+interface Illuminable {
+  id: ID!
+  name: String!
+  createdAt: DateTime!
+  lastIlluminatedAt: DateTime
+  colorPalette: [HexColor!]!
+}
+
+"""A conservation-worthy artifact with an integrity score."""
+interface Conservable {
+  id: ID!
+  conditionScore: PositiveInt!
+  lastRestoredAt: DateTime
+  restorationNotes: [String!]
+}
+
+# ─── Types ────────────────────────────────────────────────────────────────
+
+type StainedGlassPanel implements Illuminable & Conservable {
+  id: ID!
+  name: String!
+  createdAt: DateTime!
+  lastIlluminatedAt: DateTime
+  colorPalette: [HexColor!]!
+
+  conditionScore: PositiveInt!
+  lastRestoredAt: DateTime
+  restorationNotes: [String!]
+
+  primaryColor: GlassColor!
+  secondaryColors: [GlassColor!]
+  era: PanelEra!
+  width: PositiveInt
+  height: PositiveInt
+  location: PanelLocation!
+  isProtected: Boolean!
+  saintDepicted: String
+  inscription: String
+  @restricted(role: "RESTORER", reason: "Inscriptions are fragile records")
+
+  """Compute the dominant hex at a given light condition."""
+  dominantHex(light: LightCondition!): HexColor!
+}
+
+type PanelLocation {
+  chapelName: String!
+  wall: String!
+  elevation: Float!
+  windowNumber: Int!
+}
+
+type ConservationReport {
+  panelId: ID!
+  panel: StainedGlassPanel!
+  inspector: String!
+  reportDate: DateTime!
+  findings: [String!]!
+  recommendedActions: [String!]!
+  isUrgent: Boolean!
+}
+
+type IlluminationEvent {
+  panelId: ID!
+  panelName: String!
+  triggeredBy: LightCondition!
+  timestamp: DateTime!
+  intensity: Float!
+}
+
+# ─── Unions ───────────────────────────────────────────────────────────────
+
+"""Search results can be either a panel or a location."""
+union SearchResult = StainedGlassPanel | PanelLocation
+
+# ─── Input Types ──────────────────────────────────────────────────────────
+
+input PanelFilter {
+  colors: [GlassColor!]
+  eras: [PanelEra!]
+  protectedOnly: Boolean
+  minConditionScore: PositiveInt
+  searchText: String
+}
+
+input LocationInput {
+  chapelName: String
+  wall: String
+  windowNumber: Int
+}
+
+input ConservationReportInput {
+  panelId: ID!
+  inspector: String!
+  findings: [String!]!
+  recommendedActions: [String!]!
+  isUrgent: Boolean!
+}
+
+# ─── Queries ──────────────────────────────────────────────────────────────
+
+type Query {
+  """Retrieve a single panel by its unique identifier."""
+  panel(id: ID!): StainedGlassPanel
+
+  """List all panels matching the optional filter criteria."""
+  panels(filter: PanelFilter, limit: Int = 50, offset: Int = 0): [StainedGlassPanel!]!
+
+  """Search across panels and locations."""
+  search(query: String!): [SearchResult!]!
+
+  """Get the full conservation history for a given panel."""
+  conservationHistory(panelId: ID!): [ConservationReport!]!
+
+  """Retrieve a location by chapel name."""
+  location(chapelName: String!): PanelLocation
+
+  """List all distinct glass colors present in the collection."""
+  availableColors: [GlassColor!]!
+}
+
+# ─── Mutations ────────────────────────────────────────────────────────────
+
+type Mutation {
+  """Submit a new conservation report for a stained glass panel."""
+  submitConservationReport(input: ConservationReportInput!): ConservationReport!
+  @restricted(role: "RESTORER")
+
+  """Mark a panel as having been illuminated by a given light condition."""
+  recordIllumination(panelId: ID!, light: LightCondition!): IlluminationEvent!
+
+  """Update the condition score of a panel after restoration."""
+  updateConditionScore(panelId: ID!, newScore: PositiveInt!): StainedGlassPanel!
+  @restricted(role: "RESTORER", reason: "Only certified restorers may update scores")
+
+  """Delete a panel record. Requires admin privileges."""
+  deletePanel(id: ID!): Boolean!
+  @deprecated(reason: "Use archivePanel instead — permanent deletion is irreversible")
+}
+
+# ─── Subscriptions ────────────────────────────────────────────────────────
+
+type Subscription {
+  """Subscribe to real-time illumination events as light conditions change."""
+  illuminationEvents(lightFilter: [LightCondition!]): IlluminationEvent!
+
+  """Subscribe to urgent conservation alerts."""
+  urgentAlerts: ConservationReport!
+}

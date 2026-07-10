@@ -1,0 +1,36 @@
+# Chartres Blue — .gitignore example
+# ====================================
+
+# Ignore compiled assets
+*.log
+*.tmp
+*.swp
+
+# Ignore dependency directories
+node_modules/
+vendor/
+.bundle/
+
+# Ignore build output
+dist/
+build/
+out/
+
+# Ignore environment & OS files
+.env
+.env.local
+.DS_Store
+Thumbs.db
+
+# Ignore IDE config
+.idea/
+.vscode/
+*.sublime-project
+
+# But keep this one IDE file (negation example)
+!.vscode/settings.json
+
+# Ignore large data files
+*.psd
+*.zip
+*.tar.gz

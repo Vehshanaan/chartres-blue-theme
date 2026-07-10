@@ -1,0 +1,102 @@
+# ============================================
+# Chartres Blue Theme Demo — YAML
+# ============================================
+
+# --- Scalars ---
+name: &project Chartres Blue Theme
+version: '0.1.0'
+description: >
+  A VS Code theme inspired by the
+  stained glass of Chartres Cathedral,
+  featuring the legendary cobalt blue.
+
+# --- Anchors & Aliases ---
+defaults: &defaults
+  editor:
+    fontFamily: "'Cascadia Code', monospace"
+    fontSize: 14
+    lineHeight: 1.6
+    tabSize: 2
+    insertSpaces: true
+
+settings:
+  <<: *defaults
+  workbench.colorTheme: Chartres Blue Dark
+
+# --- Sequences ---
+palette:
+  dark:
+    - name: background
+      value: '#111622'
+      token: editor.background
+    - name: foreground
+      value: '#D6E2F0'
+      token: editor.foreground
+    - name: keyword
+      value: '#6B8FD4'
+      token: keyword
+    - name: string
+      value: '#2D6B4F'
+      token: string
+
+  light:
+    - { name: background, value: '#F8F4EF', token: editor.background }
+    - { name: foreground, value: '#1A2235', token: editor.foreground }
+    - { name: keyword, value: '#1A2A6C', token: keyword }
+    - { name: string, value: '#2D6B4F', token: string }
+
+# --- Nested mappings ---
+token_colors:
+  comments:
+    foreground: '#525A6D'
+    fontStyle: italic
+  keywords:
+    - scope: keyword
+      settings: { foreground: '#6B8FD4' }
+    - scope: storage.type
+      settings: { foreground: '#6B8FD4' }
+  strings:
+    - scope: string
+      settings: { foreground: '#2D6B4F' }
+    - scope: string template
+      settings: { foreground: '#6B8FD4' }
+
+# --- Multi-line literal ---
+readme: |
+  # Chartres Blue Theme
+
+  Inspired by the stained glass
+  of Chartres Cathedral.
+
+  ## Features
+  - Dark + Light variants
+  - Semantic highlighting
+  - Terminal colors
+
+# --- Boolean & null ---
+features:
+  semanticHighlighting: true
+  terminalColors: true
+  boldForKeywords: false
+  italicForComments: true
+  deprecated: null
+  experimental: ~
+
+# --- Numbers ---
+stats:
+  total_token_scopes: 128
+  color_definitions: 72
+  average_contrast_ratio: 7.8
+  coverage_percent: 95.5
+
+# --- Timestamps ---
+releases:
+  - version: 0.0.1
+    date: 2026-07-01
+    notes: Initial internal build.
+  - version: 0.1.0
+    date: 2026-07-08
+    notes: First public preview.
+  - version: 0.2.0
+    date: 2026-07-15
+    notes: Add semantic token support.

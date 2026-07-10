@@ -1,0 +1,30 @@
+# EditorConfig for Chartres Blue Stained Glass project
+root = true
+
+# All files
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 4
+
+# Markdown — soft wrapping
+[*.md]
+indent_size = 4
+trim_trailing_whitespace = false
+
+# YAML / JSON — compact
+[*.{yml,yaml,json}]
+indent_size = 2
+
+# Makefile — tabs required
+[Makefile, *.mk]
+indent_style = tab
+indent_size = 4
+
+# Batch / shell scripts
+[*.{bat,cmd,sh}]
+end_of_line = crlf
+insert_final_newline = false

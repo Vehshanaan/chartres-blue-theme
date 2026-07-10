@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="catalogue.xsl"?>
+<!--
+  Chartres Blue Theme Demo — XML
+  Stained glass panel catalogue
+-->
+<catalogue
+  xmlns="https://chartres-blue.dev/glass"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:dc="http://purl.org/dc/elements/1.1/"
+  xsi:schemaLocation="https://chartres-blue.dev/glass glass.xsd"
+  version="1.0.0"
+  generated="2026-07-10T12:00:00Z">
+
+  <metadata>
+    <dc:title xml:lang="en">Chartres Cathedral — Stained Glass Inventory</dc:title>
+    <dc:title xml:lang="fr">Cathédrale de Chartres — Inventaire des Vitraux</dc:title>
+    <dc:creator>Runze Yuan</dc:creator>
+    <dc:date>2026-07-10</dc:date>
+    <dc:rights>CC BY-SA 4.0</dc:rights>
+  </metadata>
+
+  <cathedral id="chartres" status="active">
+    <name lang="fr">Cathédrale Notre-Dame de Chartres</name>
+    <location>
+      <city>Chartres</city>
+      <region>Centre-Val de Loire</region>
+      <country code="FR">France</country>
+      <coordinates lat="48.4478" lng="1.4878"/>
+    </location>
+    <construction>
+      <phase period="Romanesque" from="1020" to="1194">Crypt and west façade</phase>
+      <phase period="Early Gothic" from="1194" to="1220">Main structure after fire</phase>
+      <phase period="High Gothic" from="1220" to="1260">North porch and spire</phase>
+    </construction>
+  </cathedral>
+
+  <panels total="176">
+    <panel id="notre-dame-belle-verriere" restored="true">
+      <name xml:lang="fr">Notre-Dame de la Belle-Verrière</name>
+      <name xml:lang="en">Our Lady of the Beautiful Window</name>
+      <year>1180</year>
+      <location wing="south" bay="14">South choir</location>
+      <dimensions unit="cm">
+        <width>240</width>
+        <height>380</height>
+      </dimensions>
+      <colors>
+        <color hex="#1A2A6C" name="Chartres blue" dominance="0.45"/>
+        <color hex="#9B1B30" name="Rose red" dominance="0.20"/>
+        <color hex="#C9A84C" name="Gold" dominance="0.15"/>
+      </colors>
+      <pigments>
+        <pigment name="cobalt oxide" formula="CoO" medieval="true"/>
+        <pigment name="copper sulfate" formula="CuSO₄" medieval="true"/>
+        <pigment name="silver stain" formula="AgNO₃" medieval="true"/>
+      </pigments>
+      <!---->
+      <iconography>
+        <figure position="center">Virgin Mary</figure>
+        <figure position="lap">Christ Child</figure>
+        <figure position="surrounding">Angels</figure>
+      </iconography>
+    </panel>
+
+    <panel id="rose-window-north" restored="false">
+      <name xml:lang="en">Rose Window — North Transept</name>
+      <year>1230</year>
+      <location wing="north">North transept</location>
+      <dimensions unit="cm">
+        <width>1280</width>
+        <height>1280</height>
+      </dimensions>
+      <colors>
+        <color hex="#1A2A6C" name="Chartres blue" dominance="0.50"/>
+      </colors>
+      <pigments>
+        <pigment name="cobalt oxide" formula="CoO" medieval="true"/>
+      </pigments>
+      <iconography>
+        <cycle>Virgin and Child with Prophets</cycle>
+      </iconography>
+    </panel>
+  </panels>
+
+</catalogue>

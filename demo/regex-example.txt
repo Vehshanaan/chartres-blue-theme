@@ -1,0 +1,36 @@
+# Chartres Blue — Regular Expression Pattern Collection
+# These patterns are used for validating stained-glass metadata.
+# ===============================================================
+
+# Email address
+[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}
+
+# URL (http/https)
+https?://[^\s/$.?#].[^\s]*
+
+# IPv4 address
+\b(?:\d{1,3}\.){3}\d{1,3}\b
+
+# Hex colour code
+#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})
+
+# RGB colour
+rgb?\(\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}\s*\)
+
+# Chinese characters (CJK Unified Ideographs)
+[一-鿿]+
+
+# Date in YYYY-MM-DD format
+\b\d{4}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12]\d|3[01])\b
+
+# Positive integer
+\b[1-9]\d*\b
+
+# Leading/trailing whitespace
+^\s+|\s+$
+
+# HTML / XML tag
+<[^>]+>
+
+# Stained-glass panel code pattern (custom)
+PANEL-[A-Z]{2}-\d{4}

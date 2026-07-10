@@ -1,0 +1,175 @@
+// ============================================
+// Chartres Blue Theme Demo — SCSS
+// ============================================
+
+// === Variables ===
+$chartres-blue: #1A2A6C;
+$rose: #9B1B30;
+$gold: #C9A84C;
+$stone: #8E8B82;
+$text-primary: #D6E2F0;
+$surface-dark: #111622;
+
+$breakpoints: (
+  'sm': 640px,
+  'md': 768px,
+  'lg': 1024px,
+  'xl': 1280px,
+);
+
+$weights: (
+  'light': 300,
+  'regular': 400,
+  'medium': 500,
+  'bold': 700,
+);
+
+// === Mixins ===
+
+@mixin respond($bp) {
+  $width: map-get($breakpoints, $bp);
+  @if $width {
+    @media (min-width: $width) { @content; }
+  } @else {
+    @warn "Unknown breakpoint: #{$bp}";
+  }
+}
+
+@mixin glass-effect($color, $opacity: 0.15) {
+  background: rgba($color, $opacity);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba($color, $opacity * 2);
+}
+
+@mixin focus-ring($color: $chartres-blue) {
+  &:focus-visible {
+    outline: 2px solid $color;
+    outline-offset: 2px;
+  }
+}
+
+// === Functions ===
+
+@function tint($color, $percentage) {
+  @return mix(white, $color, $percentage);
+}
+
+@function shade($color, $percentage) {
+  @return mix(black, $color, $percentage);
+}
+
+@function contrast-ratio($bg, $fg) {
+  // Simplified luminance calc
+  $l1: (red($bg) * 0.299 + green($bg) * 0.587 + blue($bg) * 0.114) / 255;
+  $l2: (red($fg) * 0.299 + green($fg) * 0.587 + blue($fg) * 0.114) / 255;
+  @return if($l1 > $l2, ($l1 + 0.05) / ($l2 + 0.05), ($l2 + 0.05) / ($l1 + 0.05));
+}
+
+// === Placeholder Selectors ===
+
+%card-base {
+  border-radius: 8px;
+  padding: 1.5rem;
+  transition: box-shadow 200ms ease;
+}
+
+%visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+// === Nested Styles ===
+
+.theme-preview {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+
+  .card {
+    @extend %card-base;
+    @include glass-effect($chartres-blue);
+
+    &-header {
+      font: {
+        family: 'Georgia', serif;
+        size: 1.25rem;
+        weight: map-get($weights, 'bold');
+      }
+      border-bottom: 1px solid rgba($gold, 0.3);
+      padding-bottom: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    &-body {
+      color: $text-primary;
+      line-height: 1.6;
+
+      code {
+        font-family: 'Cascadia Code', monospace;
+        background: rgba($chartres-blue, 0.25);
+        padding: 0.125rem 0.375rem;
+        border-radius: 3px;
+      }
+    }
+
+    &--featured {
+      border-color: $gold;
+      box-shadow: 0 0 0 1px $gold;
+    }
+
+    @include respond('md') {
+      padding: 2rem;
+    }
+  }
+}
+
+// === Loops ===
+
+$color-map: (
+  'primary': $chartres-blue,
+  'danger': $rose,
+  'warning': $gold,
+  'muted': $stone,
+);
+
+@each $name, $color in $color-map {
+  .btn-#{$name} {
+    background: $color;
+    color: if(contrast-ratio($color, white) >= 4.5, white, black);
+
+    &:hover {
+      background: shade($color, 15%);
+    }
+
+    &:active {
+      background: shade($color, 30%);
+    }
+  }
+}
+
+@for $i from 1 through 6 {
+  .gap-#{$i} { gap: $i * 0.25rem; }
+  .m-#{$i}  { margin: $i * 0.25rem; }
+  .p-#{$i}  { padding: $i * 0.25rem; }
+}
+
+// === Conditional ===
+
+@mixin theme($mode) {
+  @if $mode == 'dark' {
+    background: $surface-dark;
+    color: $text-primary;
+  } @else if $mode == 'light' {
+    background: #F8F4EF;
+    color: #1A2235;
+  } @else {
+    @error "Unknown theme mode: #{$mode}. Use 'dark' or 'light'.";
+  }
+}
+
+body.dark { @include theme('dark'); }
+body.light { @include theme('light'); }

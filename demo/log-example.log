@@ -1,0 +1,37 @@
+1260-10-24T10:30:00.000+0100 [INFO]  [Cathedral.Consecration] Consecration ceremony commenced in the presence of King Louis IX.
+1260-10-24T10:35:00.000+0100 [DEBUG] [Bishop.Registrar] Procession entering through the Royal Portal; 142 dignitaries recorded.
+1260-10-24T10:36:00.000+0100 [TRACE] [Lighting.Office] Sunlight detected through the south rose window at azimuth 142.3 degrees; "Chartres blue" projection measured at 12.7 m^2 on nave floor.
+1260-10-24T10:40:00.000+0100 [INFO]  [Organ.GrandOrgue] Introit played — Kyrie fons bonitatis. Temperament: meantone.
+1260-10-24T10:42:00.000+0100 [WARN]  [Crypt.Inspector] Water table reading 1.35 m; threshold is 1.30 m. Recommend monitoring.
+1260-10-24T10:45:00.000+0100 [ERROR] [Stonework.NorthTower] Crack detected in flying buttress NB-07. Tensile stress exceeds safe limit.
+1260-10-24T10:45:00.000+0100 [DEBUG] [Stonework.NorthTower] Crack coordinates: x=14.2, y=31.8, length=0.45m, width=2.1mm.
+1260-10-24T10:45:00.000+0100 [TRACE] [Stonework.NorthTower] Stress tensor at NB-07: [[-2.4, 0.8, 0.3], [0.8, -3.1, 0.1], [0.3, 0.1, -1.9]] MPa. Principal stress: σ₁ = -1.7 MPa.
+1260-10-24T10:46:00.000+0100 [WARN]  [Stonework.NorthTower] Submitting repair request to Master Builder's office.
+1260-10-24T10:50:00.000+0100 [INFO]  [Cathedral.Liturgy] Gospel reading commenced — John 2:13-22 ("Destroy this temple...").
+1260-10-24T10:52:00.000+0100 [ERROR] [Glass.Ambulatory] Panel AM-09 (The Last Supper) showing thermal stress fracture along lead came joint.
+1260-10-24T10:52:00.000+0100 [ERROR] [Glass.Ambulatory] Stack trace:
+    at GlassPanel.checkIntegrity(panel.go:284)
+    at GlassPanel.thermalCycle(panel.go:312)
+    at Ambulatory.inspectPanel(ambulatory.go:156)
+    at main.inspectionLoop(main.go:89)
+    caused by: sudden temperature differential (35°C to 12°C) during solar event
+1260-10-24T11:00:00.000+0100 [INFO]  [Cathedral.Consecration] Mass of the Consecration — Bishop's homily delivered.
+1260-10-24T11:05:00.000+0100 [INFO]  [Tourism.GuideLog] Guided tour #42 (English) led by Malcolm Miller: 28 visitors, 2 hours.
+1260-10-24T11:05:00.000+0100 [INFO]  [Tourism.GuideLog] "The north rose window tells the story of the Glorification of the Virgin. Notice how the Chartres blue appears to glow — this is due to the high cobalt oxide content in the glass."
+1260-10-24T11:10:00.000+0100 [WARN]  [Maintenance.Floor] Standing water detected near the south ambulatory. Likely源自 rainwater infiltration through triforium.
+1260-10-24T11:15:00.000+0100 [INFO]  [Cathedral.Consecration] Anointing of the altar with holy chrism.
+1260-10-24T11:20:00.000+0100 [ERROR] [Foundation.Crypt] Settlement anomaly detected. Sensor CR-04: Δz = -3.2 mm in past hour.
+1260-10-24T11:20:00.000+0100 [ERROR] [Foundation.Crypt] Stack trace:
+    at FoundationMonitor.checkSettlement(monitor.c:427)
+    at FoundationMonitor.runCycle(monitor.c:389)
+    at ThreadPool.dispatch(threadpool.c:156)
+    at main.c:217
+    fatal error: settlement rate > 2.0 mm/hr — unsafe threshold exceeded
+1260-10-24T11:21:00.000+0100 [FATAL] [Foundation.Crypt] ALERT: Immediate evacuation of crypt and south transept recommended.
+1260-10-24T11:25:00.000+0100 [INFO]  [Cathedral.Consecration] Rite continues. Prayers for preservation of the structure offered.
+1260-10-24T11:30:00.000+0100 [INFO]  [Glass.Restoration] {"window_id":"WR-01","panel":"Belle Verriere","temp_c":18.5,"humidity":62,"uv_index":0.3,"crack_count":0,"note":"stable"}
+1260-10-24T11:32:00.000+0100 [DEBUG] [Foundation.Crypt] Re-check: settlement rate now 1.8 mm/hr. Deceleration observed.
+1260-10-24T11:35:00.000+0100 [WARN]  [Foundation.Crypt] Settlement rate remains elevated but below threshold. Continuing observation.
+1260-10-24T11:45:00.000+0100 [INFO]  [Cathedral.Consecration] Consecration concluded. Te Deum laudamus.
+1260-10-24T11:46:00.000+0100 [INFO]  [Tourism.Stats] Daily visitor count: 1,847. Average dwell: 1h 23m.
+1260-10-24T11:47:00.000+0100 [TRACE] [System.Shutdown] All monitoring subsystems reporting nominal. Consecration log closed.

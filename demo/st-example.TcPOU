@@ -1,0 +1,532 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
+  <POU Name="PRG_GlassWorkshop" Id="{b1e3d440-92f2-5c7f-0d2e-2f70f14b5c61}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM PRG_GlassWorkshop
+VAR
+    (*
+        彩窗玻璃工坊控制程序
+        涵盖：状态机、定时器、计数器、数组、字符串、数学运算、条件判断
+    *)
+    nStep           : INT               := 0;                   // 当前步骤号
+    nNextStep       : INT;                                      // 下一步骤号
+
+    // --- 工位传感器 ---
+    bMaterialReady  : BOOL;                                     // 原料就绪
+    bFurnaceHot     : BOOL;                                     // 熔炉温度达标
+    bGlassPoured    : BOOL;                                     // 玻璃液已浇注
+    bPanelCooled    : BOOL;                                     // 彩窗已冷却
+    bInspected      : BOOL;                                     // 质检完成
+    bErrorAck       : BOOL;                                     // 错误确认按钮
+
+    // --- 执行器控制 ---
+    bHeaterOn       : BOOL;                                     // 加热器开启
+    bPourValveOpen  : BOOL;                                     // 浇注阀开启
+    bConveyorRun    : BOOL;                                     // 传送带运行
+
+    // --- 工艺参数 ---
+    nTargetTemp     : INT               := 1200;                // 目标炉温 (°C)
+    nCurrentTemp    : INT;                                      // 当前炉温
+    nBakeMinutes    : INT;                                      // 保温时长 (分钟)
+    nCoolMinutes    : INT;                                      // 冷却计时
+    rCobaltRatio    : REAL              := 0.045;               // 钴比例
+    rCopperRatio    : REAL;                                     // 铜比例
+    rManganeseRatio : REAL;                                     // 锰比例
+
+    // --- 生产统计 ---
+    nTotalProduced  : UDINT;                                    // 累计产量
+    nPassedCount    : UDINT;                                    // 合格数
+    nFailedCount    : UDINT;                                    // 不合格数
+    rYieldRate      : REAL;                                     // 良品率（%）
+
+    // --- 字符串 ---
+    sColorName      : STRING(32)        := 'Chartres Blue';     // 颜色名称
+    sBatchCode      : STRING(64);                               // 批次编号
+    sAlarmMsg       : STRING(255);                              // 报警信息
+
+    // --- 定时器 ---
+    tHeatUpTimer    : TON;                                      // 升温计时
+    tBakeTimer      : TON;                                      // 保温计时
+    tCoolTimer      : TON;                                      // 冷却计时
+    tDebounce       : TON;                                      // 消抖计时
+
+    // --- 触发器 ---
+    rtrStartEdge    : R_TRIG;                                   // 启动按钮上升沿
+    rtrFaultEdge    : R_TRIG;                                   // 故障上升沿
+    ftrResetEdge    : F_TRIG;                                   // 复位下降沿
+
+    // --- 计数器 ---
+    ctCycleCount    : CTU;                                      // 周期计数
+    ctRetryCount    : CTUD;                                     // 重试计数（可加减）
+
+    // --- 数组 ---
+    aTempLog        : ARRAY[0..11] OF INT;                      // 12点温度日志
+    aPigmentGrams   : ARRAY[0..5] OF REAL;                      // 6种颜料克重
+
+    // --- 结构体 ---
+    stBatchResult   : ST_BatchResult;                           // 当前批次结果
+    stDailyReport   : ST_DailyReport;                           // 日报
+
+    // --- 枚举 ---
+    eGlassStyle     : E_GlassStyle       := E_GlassStyle.Gothic;
+    eQualityGrade   : E_QualityGrade;
+
+    // --- 浮点计算 ---
+    rCircleArea     : REAL;
+    rCircleRadius   : REAL              := 64.0;                // 玫瑰窗半径 (cm)
+END_VAR
+
+VAR
+    (* 内部辅助变量 *)
+    nLoopIndex      : INT;                                      // 循环索引
+    nTempLogPtr     : INT               := 0;                   // 温度日志写指针
+    bFirstCycle     : BOOL              := TRUE;                // 首次循环
+END_VAR
+
+VAR_INPUT
+    bStartBtn       : BOOL;                                     // 启动按钮
+    bStopBtn        : BOOL;                                     // 停止按钮
+    bResetBtn       : BOOL;                                     // 复位按钮
+    nTargetBatches  : UDINT              := 20;                  // 目标批次
+END_VAR
+
+VAR_OUTPUT
+    bRunning        : BOOL;                                     // 运行中
+    bAlarm          : BOOL;                                     // 报警中
+    bDone           : BOOL;                                     // 全部完成
+    sStatusText     : STRING(64);                               // 状态文本显示
+END_VAR
+    ]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+// ========================================
+// 玫瑰窗面积计算 (π·r²)
+// ========================================
+rCircleArea := 3.14159 * rCircleRadius * rCircleRadius;
+
+// ========================================
+// 启动按钮消抖与边沿检测
+// ========================================
+(*
+   FB 调用语法说明：
+     :=  用于给功能块的【输入】参数赋值（也叫 "赋值给形参"）
+         例: tDebounce(IN := bStartBtn, PT := T#50MS)
+     =>  用于从功能块的【输出】参数取值（也叫 "从实参读回"）
+         例: tDebounce(Q => bDebounced, ET => nElapsed);
+     空着不写 = 忽略该参数（不关心其值）
+         例: tDebounce(IN := bStartBtn, PT := T#50MS, Q => , ET => );
+*)
+tDebounce(IN := bStartBtn, PT := T#50MS, Q => , ET => );
+rtrStartEdge(CLK := tDebounce.Q, Q => );
+
+// ========================================
+// 周期计数器 —— 每完成一圈计数器加一
+// ========================================
+ctCycleCount(CU := rtrStartEdge.Q, RESET := bResetBtn, PV := 9999);
+IF ctCycleCount.Q THEN
+    ctCycleCount(CU := FALSE);          // 达到预设值后不再计数
+END_IF
+
+// ========================================
+// 主步骤状态机
+// ========================================
+CASE nStep OF
+
+0:  (*
+        步骤 0 — 待机预热
+        等待启动指令，开启加热器升温
+    *)
+    sStatusText := 'Standby — heating up';
+
+    // 启动加热器
+    bHeaterOn := TRUE;
+    bConveyorRun := FALSE;
+    bPourValveOpen := FALSE;
+
+    // 升温计时：熔炉需从室温升至目标温度
+    tHeatUpTimer(IN := bHeaterOn AND (nCurrentTemp < nTargetTemp), PT := T#30M);
+
+    IF nCurrentTemp >= nTargetTemp THEN
+        bFurnaceHot := TRUE;
+        tHeatUpTimer(IN := FALSE);
+    END_IF
+
+    // 收到启动指令且炉温达标后进入下一步
+    IF rtrStartEdge.Q AND bFurnaceHot THEN
+        nStep := 10;
+    END_IF
+
+10: (*
+        步骤 10 — 配料混合
+        根据所选颜色计算颜料比例并混合
+    *)
+    sStatusText := 'Mixing pigments';
+
+    // 颜料配比
+    IF eGlassStyle = E_GlassStyle.Gothic THEN
+        aPigmentGrams[0] := rCobaltRatio * 5000.0;     // 钴 —— 产生深邃蓝色
+        aPigmentGrams[1] := rCopperRatio * 5000.0;     // 铜 —— 微调色相
+        aPigmentGrams[2] := rManganeseRatio * 5000.0;  // 锰 —— 增加透明度
+        aPigmentGrams[3] := 0.0;
+        aPigmentGrams[4] := 0.0;
+        aPigmentGrams[5] := 0.0;
+    ELSIF eGlassStyle = E_GlassStyle.Romanesque THEN
+        aPigmentGrams[0] := 0.0;
+        aPigmentGrams[1] := rCopperRatio * 8000.0;     // 罗曼式偏好铜红
+        aPigmentGrams[2] := 0.0;
+        aPigmentGrams[3] := 0.0;
+        aPigmentGrams[4] := 0.0;
+        aPigmentGrams[5] := 0.0;
+    ELSE
+        ;   // 保持默认
+    END_IF
+
+    bMaterialReady := TRUE;
+    nStep := 20;
+
+20: (*
+        步骤 20 — 熔炼保温
+        玻璃液在目标温度保温指定时长
+    *)
+    sStatusText := 'Baking — maintaining temperature';
+
+    {IF defined (Variant_LargePanel)}
+    (* 大型彩窗需延长保温时间，确保玻璃液充分均质化 *)
+    tBakeTimer(IN := bFurnaceHot, PT := T#90M);
+    {ELSE}
+    tBakeTimer(IN := bFurnaceHot, PT := T#45M);
+    {END_IF}
+    nBakeMinutes := TIME_TO_INT(tBakeTimer.ET) / 60000;
+
+    // 保温期间持续监控温度
+    IF nCurrentTemp < (nTargetTemp - 20) THEN
+        sAlarmMsg := 'Temperature drop detected — color may shift';
+        bAlarm := TRUE;
+    END_IF
+
+    IF tBakeTimer.Q THEN
+        nStep := 30;
+        tBakeTimer(IN := FALSE);
+    END_IF
+
+30: (*
+        步骤 30 — 浇注成型
+        将熔融玻璃液浇注到模具中
+    *)
+    sStatusText := 'Pouring molten glass';
+
+    bPourValveOpen := TRUE;
+    tDebounce(IN := bPourValveOpen, PT := T#3S);
+
+    IF tDebounce.Q THEN
+        bGlassPoured := TRUE;
+        bPourValveOpen := FALSE;
+        nStep := 40;
+    END_IF
+
+40: (*
+        步骤 40 — 冷却退火
+        玻璃缓慢冷却以防止应力开裂
+    *)
+    sStatusText := 'Annealing — slow cooling';
+
+    tCoolTimer(IN := bGlassPoured, PT := T#2H);
+    nCoolMinutes := TIME_TO_INT(tCoolTimer.ET) / 60000;
+
+    // 温度日志记录（环形缓冲）
+    nTempLogPtr := (nTempLogPtr + 1) MOD 12;
+    aTempLog[nTempLogPtr] := nCurrentTemp;
+
+    IF tCoolTimer.Q THEN
+        bPanelCooled := TRUE;
+        tCoolTimer(IN := FALSE);
+        nStep := 50;
+    END_IF
+
+50: (*
+        步骤 50 — 质检
+        检查气泡、色差、厚度均匀性
+    *)
+    sStatusText := 'Quality inspection';
+
+    // 模拟质检 —— 实际项目中此处会接入视觉检测系统
+    IF (nCurrentTemp < 50) AND (rCobaltRatio >= 0.03) THEN
+        eQualityGrade := E_QualityGrade.Grade_A;
+        nPassedCount := nPassedCount + 1;
+    ELSIF nCurrentTemp < 80 THEN
+        eQualityGrade := E_QualityGrade.Grade_B;
+        nPassedCount := nPassedCount + 1;
+    ELSE
+        eQualityGrade := E_QualityGrade.Rejected;
+        nFailedCount := nFailedCount + 1;
+    END_IF
+
+    nTotalProduced := nTotalProduced + 1;
+    bInspected := TRUE;
+
+    // 计算良品率
+    IF nTotalProduced > 0 THEN
+        rYieldRate := (UDINT_TO_REAL(nPassedCount) / UDINT_TO_REAL(nTotalProduced)) * 100.0;
+    END_IF
+
+    // 组装批次编号
+    sBatchCode := CONCAT('GLS-', UDINT_TO_STRING(nTotalProduced));
+    sBatchCode := CONCAT(sBatchCode, '-');
+    sBatchCode := CONCAT(sBatchCode, sColorName);
+
+    // 记录本批次结果
+    stBatchResult.BatchID := nTotalProduced;
+    stBatchResult.Color := eGlassStyle;
+    stBatchResult.TempMax := nTargetTemp;
+    stBatchResult.Passed := (eQualityGrade <> E_QualityGrade.Rejected);
+
+    nStep := 60;
+
+60: (*
+        步骤 60 — 循环判断
+        未达目标批次则返回配料，否则完成
+    *)
+    IF nTotalProduced >= nTargetBatches THEN
+        nStep := 100;
+        bDone := TRUE;
+        sStatusText := 'Production complete';
+    ELSE
+        // 开始下一循环
+        bFurnaceHot := FALSE;
+        bMaterialReady := FALSE;
+        bGlassPoured := FALSE;
+        bPanelCooled := FALSE;
+        bInspected := FALSE;
+
+        // 重新升温
+        bHeaterOn := TRUE;
+        tHeatUpTimer(IN := TRUE, PT := T#30M);
+
+        IF tHeatUpTimer.Q THEN
+            nStep := 10;
+            tHeatUpTimer(IN := FALSE);
+        END_IF
+
+        // 重试计数器 +1
+        ctRetryCount(CU := TRUE, RESET := FALSE, LOAD := FALSE, PV := 5);
+    END_IF
+
+100:(*
+        步骤 100 — 生产完成
+        关闭所有执行器，等待复位
+    *)
+    sStatusText := 'Done — awaiting reset';
+    bHeaterOn := FALSE;
+    bPourValveOpen := FALSE;
+    bConveyorRun := FALSE;
+    bRunning := FALSE;
+
+    IF bResetBtn THEN
+        nStep := 0;
+        nTotalProduced := 0;
+        nPassedCount := 0;
+        nFailedCount := 0;
+        ctRetryCount(RESET := TRUE);
+        bDone := FALSE;
+        bAlarm := FALSE;
+    END_IF
+
+END_CASE
+
+// ========================================
+// 运行状态综合输出
+// ========================================
+bRunning := (nStep > 0) AND (nStep < 100) AND NOT bAlarm;
+
+// ========================================
+// 故障处理 —— 边沿触发报警日志
+// ========================================
+rtrFaultEdge(CLK := bAlarm);
+IF rtrFaultEdge.Q THEN
+    sAlarmMsg := CONCAT('ALARM at step ', INT_TO_STRING(nStep));
+    sAlarmMsg := CONCAT(sAlarmMsg, ' — ');
+    sAlarmMsg := CONCAT(sAlarmMsg, sStatusText);
+END_IF
+
+ftrResetEdge(CLK := bResetBtn);
+IF ftrResetEdge.Q AND bAlarm THEN
+    bAlarm := FALSE;
+    sAlarmMsg := '';
+END_IF
+
+// ========================================
+// 首次循环标记
+// ========================================
+bFirstCycle := FALSE;
+      ]]></ST>
+    </Implementation>
+
+    <Action Name="Act_DailyReport" Id="{c2d4e550-03g3-6d8g-1e3f-3g81g25c6d72}">
+      <Implementation>
+        <ST><![CDATA[(*
+    生成日报 —— 统计当日生产数据
+    包含良品率、平均炉温、各颜色产量
+*)
+
+// 格式： "Date | Total | Passed | Failed | Yield% | AvgTemp"
+stDailyReport.Date := GVL_System.ActualTime;
+stDailyReport.TotalProduced := nTotalProduced;
+stDailyReport.Passed := nPassedCount;
+stDailyReport.Failed := nFailedCount;
+
+IF nTotalProduced > 0 THEN
+    stDailyReport.YieldPercent :=
+        (UDINT_TO_REAL(nPassedCount) / UDINT_TO_REAL(nTotalProduced)) * 100.0;
+
+    // 计算 12 点平均温度
+    nLoopIndex := 0;
+    FOR nLoopIndex := 0 TO 11 BY 1 DO
+        stDailyReport.AvgTemperature :=
+            stDailyReport.AvgTemperature + aTempLog[nLoopIndex];
+    END_FOR
+    stDailyReport.AvgTemperature := stDailyReport.AvgTemperature / 12;
+
+ELSE
+    stDailyReport.YieldPercent := 0.0;
+    stDailyReport.AvgTemperature := 0;
+END_IF
+
+// 根据报警次数分级
+IF nFailedCount = 0 THEN
+    stDailyReport.Summary := 'All panels passed — excellent day!';
+ELSIF nFailedCount <= 2 THEN
+    stDailyReport.Summary := 'Minor rejects — within tolerance';
+ELSIF nFailedCount <= 5 THEN
+    stDailyReport.Summary := 'Elevated rejects — check furnace';
+ELSE
+    stDailyReport.Summary := 'High reject rate — stop and investigate';
+END_IF
+        ]]></ST>
+      </Implementation>
+    </Action>
+
+    <Action Name="Act_Calibrate" Id="{d3e5f661-14h4-7e9h-2f4g-4h92h36d7e83}">
+      <Implementation>
+        <ST><![CDATA[(*
+    炉温传感器校准例程
+    遍历 12 个采样点，计算偏移量并写入补偿表
+*)
+
+VAR
+    nIdx        : INT;
+    rSum        : REAL;
+    rOffset     : REAL;
+END_VAR
+
+rSum := 0.0;
+
+// 采集 12 个样本取平均
+FOR nIdx := 0 TO 11 BY 1 DO
+    rSum := rSum + INT_TO_REAL(aTempLog[nIdx]);
+END_FOR
+
+// 计算偏移量 (基准值 1200°C)
+rOffset := 1200.0 - (rSum / 12.0);
+
+// 偏差异常判断
+IF ABS(rOffset) > 50.0 THEN
+    sAlarmMsg := 'Sensor drift severe — maintenance required';
+    bAlarm := TRUE;
+ELSIF ABS(rOffset) > 20.0 THEN
+    sAlarmMsg := 'Sensor drift moderate — schedule calibration';
+ELSE
+    sAlarmMsg := 'Sensor within tolerance';
+END_IF
+        ]]></ST>
+      </Implementation>
+    </Action>
+
+    <Method Name="Mth_ResetAll" Id="{e4f6g772-25i5-8f0i-3g5h-5i03j47e8f94}">
+      <Implementation>
+        <ST><![CDATA[(*
+    全系统复位方法
+    将所有过程变量恢复为初始值
+*)
+
+nStep           := 0;
+nNextStep       := 0;
+bMaterialReady  := FALSE;
+bFurnaceHot     := FALSE;
+bGlassPoured    := FALSE;
+bPanelCooled    := FALSE;
+bInspected      := FALSE;
+bHeaterOn       := FALSE;
+bPourValveOpen  := FALSE;
+bConveyorRun    := FALSE;
+bAlarm          := FALSE;
+bDone           := FALSE;
+nCurrentTemp    := 25;                  // 室温
+sBatchCode      := '';
+sAlarmMsg       := '';
+
+// 定时器复位
+tHeatUpTimer(IN := FALSE);
+tBakeTimer(IN := FALSE);
+tCoolTimer(IN := FALSE);
+tDebounce(IN := FALSE);
+
+// 计数器复位
+ctCycleCount(RESET := TRUE);
+ctRetryCount(RESET := TRUE);
+
+// 数组清零
+FOR nLoopIndex := 0 TO 11 BY 1 DO
+    aTempLog[nLoopIndex] := 0;
+END_FOR
+
+FOR nLoopIndex := 0 TO 5 BY 1 DO
+    aPigmentGrams[nLoopIndex] := 0.0;
+END_FOR
+        ]]></ST>
+      </Implementation>
+    </Method>
+
+    <Property Name="Prop_FurnaceTemp" Id="{f5g7h883-36j6-9g1j-4h6i-6j14k58f9g05}">
+      <Declaration><![CDATA[(*
+    PROPERTY 示例 —— 带 Get/Set 的属性
+    用于封装内部变量，提供受控的读写访问
+*)
+PROPERTY Prop_FurnaceTemp : INT
+VAR
+    nTempBuffer : INT;
+END_VAR
+      ]]></Declaration>
+      <Get>
+        <ST><![CDATA[(*
+    Get 访问器 —— 读取当前炉温
+    增加阈值钳位以防返回异常值
+*)
+IF nCurrentTemp > 0 AND nCurrentTemp < 2000 THEN
+    Prop_FurnaceTemp := nCurrentTemp;
+ELSE
+    Prop_FurnaceTemp := 25;     // 传感器故障时返回室温
+END_IF
+        ]]></ST>
+      </Get>
+      <Set>
+        <ST><![CDATA[(*
+    Set 访问器 —— 设定目标炉温
+    仅允许在合理范围 (800°C ~ 1500°C) 内修改
+    且必须在非运行状态下才能更改设定值
+*)
+{IF defined (Variant_HighTemp)}
+{ warning 'High-temp variant: upper limit extended to 1600°C' }
+IF nTempBuffer >= 800 AND nTempBuffer <= 1600 AND NOT bRunning THEN
+    nTargetTemp := nTempBuffer;
+END_IF
+{ELSE}
+IF nTempBuffer >= 800 AND nTempBuffer <= 1500 AND NOT bRunning THEN
+    nTargetTemp := nTempBuffer;
+ELSIF nTempBuffer > 1500 THEN
+    sAlarmMsg := 'Temperature setpoint out of range — max 1500°C';
+END_IF
+{END_IF}
+        ]]></ST>
+      </Set>
+    </Property>
+  </POU>
+</TcPlcObject>

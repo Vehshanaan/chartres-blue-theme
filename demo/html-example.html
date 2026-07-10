@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Chartres Cathedral — Vitrail & Cobalt Blue">
+  <title>Chartres Cathedral · Stained Glass</title>
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <header>
+    <h1>⛪ Cathédrale Notre-Dame de Chartres</h1>
+    <nav aria-label="Main navigation">
+      <ul>
+        <li><a href="#history" class="nav-link active">历史</a></li>
+        <li><a href="#glass" class="nav-link">彩窗</a></li>
+        <li><a href="#blue" class="nav-link">查特蓝</a></li>
+        <li><a href="#visit" class="nav-link">参观</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <article id="history">
+      <h2>历史沿革</h2>
+      <!-- Built beginning in 1194 after a fire -->
+      <p class="lead">
+        Chartres Cathedral, mostly constructed between <time datetime="1194">1194</time> and
+        <time datetime="1220">1220</time>, is one of the finest examples of
+        <strong>French Gothic architecture</strong>.
+      </p>
+      <blockquote cite="https://whc.unesco.org/en/list/81/">
+        <p>"A masterpiece of the flowering of Gothic art in the 12th and 13th centuries."</p>
+        <footer>— UNESCO World Heritage</footer>
+      </blockquote>
+    </article>
+
+    <section id="glass" aria-labelledby="glass-title">
+      <h2 id="glass-title">彩窗艺术</h2>
+      <figure>
+        <img src="belle-verriere.jpg"
+             alt="Notre-Dame de la Belle-Verrière"
+             srcset="belle-verriere@2x.jpg 2x"
+             loading="lazy">
+        <figcaption><em>Notre-Dame de la Belle-Verrière</em> (c. 1180)</figcaption>
+      </figure>
+
+      <details>
+        <summary>彩色玻璃的颜色来源</summary>
+        <table>
+          <caption>中世纪颜料与颜色对照表</caption>
+          <thead>
+            <tr>
+              <th scope="col">颜色</th>
+              <th scope="col">颜料</th>
+              <th scope="col">化学式</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>蓝色</td>
+              <td>Cobalt oxide</td>
+              <td><code>CoO</code></td>
+            </tr>
+            <tr>
+              <td>红色</td>
+              <td>Copper oxide</td>
+              <td><code>Cu₂O</code></td>
+            </tr>
+            <tr>
+              <td>金色</td>
+              <td>Silver stain</td>
+              <td><code>AgNO₃</code></td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr><td colspan="3">数据来源：中世纪化学研究</td></tr>
+          </tfoot>
+        </table>
+      </details>
+    </section>
+
+    <section id="blue">
+      <h2>查特蓝</h2>
+      <p>Chartres Blue (<span class="swatch" style="background:#1A2A6C"></span> <code>#1A2A6C</code>) is a legendary shade of cobalt blue used extensively in the cathedral's stained glass.</p>
+      <ul class="facts">
+        <li>Produced with <mark>cobalt oxide</mark> imported from Central Europe</li>
+        <li>Withstands temperatures above <data value="1200">1200°C</data></li>
+        <li>Retains luminosity for over <span data-unit="century">8</span> centuries</li>
+      </ul>
+    </section>
+  </main>
+
+  <aside>
+    <h3>扩展阅读</h3>
+    <dl>
+      <dt>UNESCO 编号</dt>
+      <dd>81bis</dd>
+      <dt>列入年份</dt>
+      <dd>1979</dd>
+    </dl>
+  </aside>
+
+  <footer>
+    <small>&copy; 2026 Chartres Blue Theme Demo</small>
+    <address>
+      Contact: <a href="mailto:demo@chartres-blue.dev">demo@chartres-blue.dev</a>
+    </address>
+  </footer>
+</body>
+</html>

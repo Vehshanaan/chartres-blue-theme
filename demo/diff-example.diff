@@ -1,0 +1,129 @@
+From 7e3f8a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f Mon Sep 17 00:00:00 2001
+From: Master Builder <builder@chartres.fr>
+Date:   Sun Oct 24 10:30:00 1260 +0100
+Subject: [PATCH] Complete consecration ceremony preparations
+
+---
+diff --git a/north-aisle/windows.toml b/north-aisle/windows.toml
+index abc1234..def5678 100644
+--- a/north-aisle/windows.toml
++++ b/north-aisle/windows.toml
+@@ -1,10 +1,14 @@
+ # North Aisle Windows — Installation Plan
+-# Drafted: 1210
++# Drafted: 1210 — Revised for consecration
++
++[metadata]
++last_updated = 1260-10-24
++status = "complete"
+
+ [[window]]
+-id = "NA-01"
+-title = "Life of the Virgin"
++id = "NA-01"
++title = "Life of the Virgin"
+ panel_count = 4
+-status = "in_progress"
++status = "installed"
+ colors = ["chartres_blue", "ruby", "gold", "emerald"]
+
+diff --git a/north-transept/rose-window.md b/north-transept/rose-window.md
+new file mode 100644
+index 0000000..aabb1122
+--- /dev/null
++++ b/north-transept/rose-window.md
+@@ -0,0 +1,22 @@
++# North Rose Window — Specifications
++
++Also known as the *Rose du Nord* or *Window of the Glorification of the Virgin*.
++
++| Attribute       | Value                |
++|-----------------|----------------------|
++| Diameter        | 10.5 m               |
++| Date            | c. 1230              |
++| Central panel   | Virgin and Child     |
++| Surrounding     | Kings of Judah       |
++| Main color      | Chartres blue        |
++
++## Symbolism
++
++The central medallion depicts the Virgin Mary enthroned,
++surrounded by doves and angels. The twelve kings of Judah
++radiate outward in a geometric pattern that represents
++divine order.
++
++> "The north rose is a symphony in blue."
++> — Malcolm Miller, guide (1956–2023)
+
+diff --git a/south-transept/rose-window.md b/south-transept/rose-window.md
+deleted file mode 100644
+index 9a8b7c6d..0000000
+--- a/south-transept/rose-window.md
++++ /dev/null
+@@ -1,18 +0,0 @@
+-# South Rose Window — Specifications
+-
+-Also known as the *Rose du Midi* or *Window of Christ Triumphant*.
+-
+-| Diameter        | 10.5 m               |
+-| Date            | c. 1225              |
+-| Central panel   | Christ enthroned     |
+-| Surrounding     | Elders of Revelation |
+-
+-## Restoration Notes
+-
+-The south rose was heavily damaged in a fire in 1506
+-and was restored in 1507–1510 by Jean Lecuyer.
+-
+-| Panel  | Theme                    | Restored |
+-|--------|--------------------------|----------|
+-| S-01   | Christ in Majesty        | 1507     |
+-| S-02   | Angels with Instruments  | 1509     |
+
+diff --git a/facade/west-portals.yaml b/facade/west-portals.yaml
+index 1a2b3c4d..5e6f7a8b 100644
+--- a/facade/west-portals.yaml
++++ b/facade/west-portals.yaml
+@@ -5,8 +5,8 @@ portals:
+   - name: "Portal of the Last Judgment"
+     location: "Center"
+     sculptures:
+       - "Christ in Majesty"
+-      - "Apostles"
+-      - "Virtues and Vices"
++      - "The Twelve Apostles"
++      - "Allegories of Virtues and Vices"
+   - name: "Portal of the Coronation"
+     location: "North"
+     tympanum: "Coronation of the Virgin"
+@@ -15,3 +15,5 @@ portals:
+   - name: "Portal of the Incarnation"
+     location: "South"
+     tympanum: "Nativity and Annunciation"
++    note: "Depicts the Tree of Jesse on the right pillar"
++
+
+diff --git a/crypt/foundations.c b/crypt/foundations.c
+index deadbeef..cafebabe 100644
+--- a/crypt/foundations.c
++++ b/crypt/foundations.c
+@@ -25,12 +25,14 @@ struct foundation {
+
+ static struct foundation crypt = {
+     .depth_m      = 8.5,
+-    .material     = "limestone",
++    .material     = "limestone_and_chalk",
+     .water_table  = 1.2,
+-    .status       = STABLE,
++    .status       = COMPLETE,
+     /* Fulbert's crypt retains the original 11th-century base */
+     .origin_year  = 1020,
++    .origin_year  = 1020,  /* verified against Fulbert's records */
+ };
+
++/* 1194 fire destroyed the upper church; crypt survived intact */
++
+ int check_settlement(struct foundation *f) {
+-    return f->settlement_mm < 5;
++    return f->settlement_mm < 10;  /* tolerance adjusted after analysis */
+ }

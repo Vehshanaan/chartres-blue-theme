@@ -1,0 +1,85 @@
+{
+  "$schema": "https://chartres-blue.dev/demo.schema.json",
+  "title": "Chartres Cathedral — Stained Glass Inventory",
+  "description": "A sample JSON document with nested objects, arrays, and mixed types for theme preview.",
+  "metadata": {
+    "version": "1.0.0",
+    "generated": "2026-07-10T12:00:00Z",
+    "author": {
+      "name": "Runze Yuan",
+      "email": null
+    }
+  },
+  "cathedral": {
+    "name": "Cathédrale Notre-Dame de Chartres",
+    "location": {
+      "city": "Chartres",
+      "region": "Centre-Val de Loire",
+      "country": "France",
+      "coordinates": {
+        "lat": 48.4478,
+        "lng": 1.4878
+      }
+    },
+    "unesco": {
+      "id": "81bis",
+      "inscribed": 1979,
+      "criteria": ["i", "ii", "iv"]
+    }
+  },
+  "panels": [
+    {
+      "id": "notre-dame-belle-verriere",
+      "name": "Notre-Dame de la Belle-Verrière",
+      "year": 1180,
+      "location": "south-choir",
+      "dimensions": { "width": 240, "height": 380, "unit": "cm" },
+      "dominantColor": "#1A2A6C",
+      "colors": ["#1A2A6C", "#9B1B30", "#C9A84C", "#2D6B4F"],
+      "pigments": ["cobalt oxide", "copper sulfate", "silver stain"],
+      "iconography": ["Virgin Mary", "Christ Child", "Angels"],
+      "condition": "excellent",
+      "restored": true
+    },
+    {
+      "id": "rose-window-north",
+      "name": "Rose Window — North Transept",
+      "year": 1230,
+      "location": "north-transept",
+      "dimensions": { "width": 1280, "height": 1280, "unit": "cm" },
+      "dominantColor": "#1A2A6C",
+      "colors": ["#1A2A6C", "#6B8FD4", "#C7364A", "#C9A84C"],
+      "pigments": ["cobalt oxide", "copper oxide"],
+      "iconography": ["Virgin and Child", "Prophets", "Kings of Judah"],
+      "condition": "good",
+      "restored": false
+    },
+    {
+      "id": "zodiac-labours",
+      "name": "Zodiac and Labours of the Months",
+      "year": 1217,
+      "location": "west-facade",
+      "dimensions": { "width": 180, "height": 310, "unit": "cm" },
+      "dominantColor": "#C9A84C",
+      "colors": ["#C9A84C", "#1A2A6C", "#8E8B82"],
+      "pigments": ["silver stain", "iron oxide"],
+      "iconography": ["Zodiac signs", "Monthly labours"],
+      "condition": "fair",
+      "restored": true
+    }
+  ],
+  "statistics": {
+    "totalPanels": 176,
+    "totalSurfaceArea": 2600,
+    "surfaceUnit": "m²",
+    "oldestPanel": 1145,
+    "newestPanel": 1240,
+    "estimatedCobaltUsed": 42.5,
+    "cobaltUnit": "kg"
+  },
+  "references": [
+    "https://whc.unesco.org/en/list/81/",
+    "https://www.cathedrale-chartres.org/"
+  ],
+  "tags": ["stained-glass", "gothic", "medieval", "cobalt-blue", "unesco"]
+}

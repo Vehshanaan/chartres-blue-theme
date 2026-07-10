@@ -1,0 +1,108 @@
+# ============================================================================
+# Chartres Cathedral Configuration — TOML 示例
+# 展示 TOML 格式的主要语法特性, 内容借用了沙特尔大教堂与彩绘玻璃主题
+# ============================================================================
+
+[cathedral]
+name = "Chartres Cathedral"
+location = "Chartres, France"
+built = 1260
+style = "High Gothic"
+
+[cathedral.dimensions]
+height = 36.5      # 浮点数: 中殿高度 (米)
+length = 130.2
+width = 46.5
+
+# --- 字符串 (基本 / 字面量 / 多行) ---
+
+[strings]
+basic = "Notre-Dame de Chartres"
+literal = 'C''est la cathédrale'
+multiline = """
+The Blue Virgin Window,
+also known as Notre-Dame de la Belle Verrière,
+dates from the 12th century.
+"""
+multi_literal = '''
+Rose du Nord
+Rose du Midi
+'''
+
+# --- 整数 / 浮点数 / 布尔值 ---
+
+[numbers]
+int_hex     = 0x7C12        # 十六进制
+int_oct     = 0o1702        # 八进制
+int_bin     = 0b1101_0011   # 二进制 (带下划线)
+float_pi    = 3.1416
+float_sci   = 6.022e23
+float_inf   = inf
+float_nan   = -nan
+
+[booleans]
+has_crypt       = true
+has_tower       = true
+has_spire       = false   # 原始尖塔在 16 世纪毁于雷击
+is_unesco_site  = true
+
+# --- 日期时间 ---
+
+[dates]
+groundbreaking  = 1194-10-26       # 当地传说
+consecration    = 1260-10-24T10:30:00
+last_restoration = 2019-06-15T08:00:00+02:00
+
+# --- 点分隔键 (Dotted Keys) ---
+
+guide.name          = "Malcolm Miller"
+guide.years         = 1956..2023    # 区间
+guide.note          = "Legendary English-speaking guide at Chartres"
+
+# --- 数组 ---
+
+windows = [
+  "Notre-Dame de la Belle Verrière",
+  "The Nativity",
+  "The Tree of Jesse",
+  "The Life of Charlemagne",
+]
+
+rose_windows.diameter_meters = [10.5, 10.5, 10.5]
+rose_windows.colors          = ["blue", "red", "gold", "green", "purple"]
+
+# --- 内联表 (Inline Table) ---
+
+architect   = { name = "Unknown (medieval master builders)", style = "Gothic" }
+patron      = { name = "Louis IX of France", role = "donor", present_at_consecration = true }
+
+# --- 数组表 (Array of Tables) ---
+
+[[stained_glass]]
+title    = "Notre-Dame de la Belle Verrière"
+location = "South choir"
+period   = "12th century"
+colors   = ["Chartres blue", "ruby red", "emerald green"]
+
+[[stained_glass]]
+title    = "The Tree of Jesse"
+location = "West facade"
+period   = "1150"
+colors   = ["blue", "red", "yellow", "white"]
+
+[[stained_glass]]
+title    = "The Life of Charlemagne"
+location = "North aisle"
+period   = "1225"
+colors   = ["sapphire", "crimson", "amber"]
+
+# --- 表头嵌套 -----------------------------------------
+
+[visitor_info]
+season     = "April–October"
+fee        = 0.0   # 免费进入; 登塔需另外购票
+
+[visitor_info.hours]
+monday_to_friday = "08:30–19:00"
+saturday         = "08:30–18:00"
+sunday           = "09:00–19:00"

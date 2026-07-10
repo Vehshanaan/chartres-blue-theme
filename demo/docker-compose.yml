@@ -1,0 +1,230 @@
+# =============================================================================
+# Chartres Cathedral Stained Glass — Docker Compose Stack
+# =============================================================================
+# Orchestrates the services needed to power the interactive stained glass
+# viewer, including the web API, a Redis cache, a PostgreSQL database, and
+# an Nginx reverse proxy with TLS termination.
+# =============================================================================
+
+version: "3.9"
+
+# ─── Named Volumes ─────────────────────────────────────────────────────────
+
+volumes:
+  postgres_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /data/chartres/postgres
+      o: bind
+
+  redis_data:
+    name: chartres_redis_volume
+    labels:
+      app: "chartres"
+      component: "cache"
+
+  stained_glass_assets:
+    driver: local-persist
+    external: false
+
+# ─── Networks ──────────────────────────────────────────────────────────────
+
+networks:
+  frontend:
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.name: "chartres-front"
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.20.0.0/24"
+          gateway: "172.20.0.1"
+
+  backend:
+    driver: overlay
+    internal: true
+    attachable: false
+    ipam:
+      config:
+        - subnet: "172.21.0.0/24"
+
+  monitoring:
+    external: true
+    name: prometheus-net
+
+# ─── Services ──────────────────────────────────────────────────────────────
+
+services:
+
+  # Web API — serves the stained glass interactive viewer
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+      args:
+        GLASS_THEME: "${GLASS_THEME:-chartres-blue}"
+        BUILD_NUMBER: "${BUILD_NUMBER:-0}"
+    image: chartres/stained-glass-api:${TAG:-latest}
+    container_name: chartres-api
+    restart: unless-stopped
+
+    ports:
+      - target: 3000
+        published: 80
+        protocol: tcp
+        mode: host
+
+    environment:
+      NODE_ENV: production
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: chartres
+      DB_USER: ${DB_USER:-glass_admin}
+      DB_PASSWORD: ${DB_PASSWORD:?Database password is required}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      LOG_LEVEL: warn
+      SENTRY_DSN: ${SENTRY_DSN:-}
+
+    env_file:
+      - ./config/production.env
+
+    volumes:
+      - stained_glass_assets:/app/assets:ro
+
+    networks:
+      - frontend
+      - backend
+      - monitoring
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+
+    healthcheck:
+      test: ["CMD-SHELL", "curl --fail http://localhost:3000/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+
+    deploy:
+      mode: replicated
+      replicas: 2
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 512M
+        reservations:
+          cpus: "0.25"
+          memory: 128M
+      update_config:
+        parallelism: 1
+        delay: 10s
+        order: start-first
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
+        window: 60s
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.api.rule=Host(`chartres.local`)"
+
+  # PostgreSQL — persists stained glass metadata and user sessions
+  postgres:
+    image: postgres:16-alpine
+    container_name: chartres-postgres
+    restart: always
+
+    environment:
+      POSTGRES_DB: chartres
+      POSTGRES_USER: ${DB_USER:-glass_admin}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?Database password is required}
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./db/migrations:/docker-entrypoint-initdb.d:ro
+
+    networks:
+      - backend
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U glass_admin -d chartres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+    deploy:
+      mode: replicated
+      replicas: 1
+      resources:
+        limits:
+          memory: 1G
+
+  # Redis — caches rendered glass panel tiles and session state
+  redis:
+    image: redis:7-alpine
+    container_name: chartres-redis
+    restart: unless-stopped
+
+    command:
+      - redis-server
+      - --appendonly yes
+      - --maxmemory 256mb
+      - --maxmemory-policy allkeys-lru
+
+    volumes:
+      - redis_data:/data
+
+    networks:
+      - backend
+
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+
+    deploy:
+      resources:
+        limits:
+          memory: 300M
+
+  # Nginx — reverse proxy with TLS for the frontend
+  nginx:
+    image: nginx:1.25-alpine
+    container_name: chartres-nginx
+    restart: unless-stopped
+
+    ports:
+      - "443:443"
+      - "80:80"
+
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/sites:/etc/nginx/conf.d:ro
+      - ./certs:/etc/nginx/certs:ro
+      - stained_glass_assets:/usr/share/nginx/html/assets:ro
+
+    networks:
+      - frontend
+
+    depends_on:
+      api:
+        condition: service_healthy
+
+    healthcheck:
+      test: ["CMD", "nginx", "-t"]
+      interval: 60s
+      timeout: 5s
+      retries: 2
+
+    deploy:
+      mode: global
+      placement:
+        constraints:
+          - node.role == manager
