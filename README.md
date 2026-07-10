@@ -9,17 +9,9 @@ Chartres Blue Theme 是一个 VS Code 主题扩展，包含以下两套主题：
 
 ## 安装引导
 
-### 方式一：从 VS Code Marketplace 安装
+> 当前版本暂未发布到 VS Code Marketplace，请使用 VSIX 离线安装。
 
-1. 打开 VS Code。
-2. 进入扩展市场（Extensions）。
-3. 搜索 `Chartres Blue Theme`。
-4. 点击 **Install**。
-5. 安装后通过 `Preferences: Color Theme` 选择：
-   - `Chartres Blue Dark`
-   - `Chartres Blue Light`
-
-### 方式二：离线安装 VSIX（二进制包）
+### 方式：离线安装 VSIX（二进制包）
 
 仓库已包含可直接安装的 VSIX 文件（位于 `release/` 目录）：
 
@@ -37,6 +29,11 @@ Chartres Blue Theme 是一个 VS Code 主题扩展，包含以下两套主题：
 ```bash
 code --install-extension release/chartres-blue-theme-0.4.0.vsix
 ```
+
+安装后通过 `Preferences: Color Theme` 选择：
+
+- `Chartres Blue Dark`
+- `Chartres Blue Light`
 
 ## 开发与本地预览
 
