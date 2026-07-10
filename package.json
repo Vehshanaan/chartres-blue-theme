@@ -3,8 +3,12 @@
   "displayName": "Chartres Blue Theme",
   "description": "Inspired by the stained glass of Chartres Cathedral — a dark and a light theme built around the legendary cobalt blue.",
   "version": "0.4.0",
-  "publisher": "yuanrunze",
+  "publisher": "Vehshanaan",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Vehshanaan/chartres-blue-theme.git"
+  },
   "engines": {
     "vscode": "^1.80.0"
   },

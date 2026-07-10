@@ -4,3 +4,5 @@
 release/**
 *.vsix
 node_modules/**
+demo/**
+docs/**
