@@ -1,0 +1,37 @@
+{
+  "name": "chartres-blue-theme",
+  "displayName": "Chartres Blue Theme",
+  "description": "Inspired by the stained glass of Chartres Cathedral — a dark and a light theme built around the legendary cobalt blue.",
+  "version": "0.1.0",
+  "publisher": "yuanrunze",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Themes"
+  ],
+  "contributes": {
+    "themes": [
+      {
+        "label": "Chartres Blue Dark",
+        "uiTheme": "vs-dark",
+        "path": "./themes/chartres-blue-dark.json"
+      },
+      {
+        "label": "Chartres Blue Light",
+        "uiTheme": "vs",
+        "path": "./themes/chartres-blue-light.json"
+      }
+    ]
+  },
+  "keywords": [
+    "theme",
+    "dark",
+    "light",
+    "chartres",
+    "blue",
+    "cathedral",
+    "stained glass"
+  ]
+}
