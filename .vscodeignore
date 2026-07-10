@@ -1,0 +1,6 @@
+.vscode/**
+.git/**
+.gitignore
+release/**
+*.vsix
+node_modules/**
