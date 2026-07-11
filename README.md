@@ -9,9 +9,19 @@ Chartres Blue Theme 是一个 VS Code 主题扩展，包含以下两套主题：
 
 ## 安装引导
 
-> 当前版本暂未发布到 VS Code Marketplace，请使用 VSIX 离线安装。
+### 方式一：VS Code Marketplace（推荐）
 
-### 方式：离线安装 VSIX（二进制包）
+在 VS Code 扩展面板搜索 **Chartres Blue Cathedral Theme**，或直接访问：
+
+https://marketplace.visualstudio.com/items?itemName=Vehshanaan.chartres-blue-theme-vscode
+
+也可使用命令行：
+
+```bash
+code --install-extension Vehshanaan.chartres-blue-theme-vscode
+```
+
+### 方式二：离线安装 VSIX（二进制包）
 
 仓库已包含可直接安装的 VSIX 文件（位于 `release/` 目录）：
 
