@@ -1,63 +1,39 @@
-# Chartres Blue Theme
+# Chartres Blue Cathedral Theme
 
-Chartres Blue Theme 是一个 VS Code 主题扩展，包含以下两套主题：
+一套灵感来源于沙特尔大教堂（Chartres Cathedral）彩绘玻璃标志性钴蓝色的 VS Code 主题，包含深色与浅色两套。
 
-- **Chartres Blue Dark**（深色）
-- **Chartres Blue Light**（浅色）
+## 主题
 
-灵感来自沙特尔大教堂（Chartres Cathedral）彩绘玻璃的标志性蓝色。
+- **Chartres Blue Dark** — 深色主题，以钴蓝为主色调，低对比度的暖色点缀，适合长时间编码
+- **Chartres Blue Light** — 浅色主题，以羊皮纸暖白为底色，宝石色调的语法高亮，如同泥金手抄本
 
-## 安装引导
+## 安装
 
-### 方式一：VS Code Marketplace（推荐）
-
-在 VS Code 扩展面板搜索 **Chartres Blue Cathedral Theme**，或直接访问：
-
-https://marketplace.visualstudio.com/items?itemName=Vehshanaan.chartres-blue-theme-vscode
-
-也可使用命令行：
+在 VS Code 扩展面板搜索 **Chartres Blue Cathedral Theme**，或通过命令行安装：
 
 ```bash
 code --install-extension Vehshanaan.chartres-blue-theme-vscode
 ```
 
-### 方式二：离线安装 VSIX（二进制包）
+也可以从 [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=Vehshanaan.chartres-blue-theme-vscode) 直接安装。
 
-仓库已包含可直接安装的 VSIX 文件（位于 `release/` 目录）：
+## 使用
 
-- `release/chartres-blue-theme-vscode-0.4.0.vsix`
-
-安装步骤：
-
-1. 打开 VS Code。
-2. 打开命令面板（`Ctrl/Cmd + Shift + P`）。
-3. 执行 `Extensions: Install from VSIX...`。
-4. 选择 `release/chartres-blue-theme-vscode-0.4.0.vsix` 完成安装。
-
-也可使用命令行：
-
-```bash
-code --install-extension release/chartres-blue-theme-vscode-0.4.0.vsix
-```
-
-安装后通过 `Preferences: Color Theme` 选择：
+安装后通过 `Preferences: Color Theme`（`Ctrl+K Ctrl+T`）选择：
 
 - `Chartres Blue Dark`
 - `Chartres Blue Light`
 
-## 开发与本地预览
+## 开发
 
-1. 克隆仓库后在 VS Code 中打开。
-2. 按 `F5` 启动 Extension Development Host。
-3. 在新窗口中切换主题进行预览。
+```bash
+# 克隆仓库
+git clone https://github.com/Vehshanaan/chartres-blue-theme.git
+cd chartres-blue-theme
 
-## 项目结构
-
-- `themes/`：主题定义文件
-- `release/`：已打包的 VSIX 文件
-- `demo/`：用于展示主题效果的示例文件
-- `docs/`：设计与研究文档
+# 在 VS Code 中打开，按 F5 启动 Extension Development Host 预览
+```
 
 ## 许可证
 
-MIT
+MIT © 2025 Vehshanaan
