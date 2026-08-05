@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.5.0
+
+- Modern UI 兼容：标签栏深蓝 + 亮蓝激活标签、Command Center 浅蓝胶囊，适配新 UI 的透明标题栏/活动栏/状态栏
+- 浅色主题文字配色：灰阶文字统一为微蓝暗灰，面包屑改沙特尔钴蓝，菜单 hover 与胶囊选中项区分
+- 深色主题文字配色：活动栏 badge 宝石红、胶囊选中项玻璃绿、括号红提亮、面包屑/行号玻璃绿、子模块紫罗兰
+- 补齐 Modern UI 相关颜色键（commandCenter.*、surface.* 验证、toolbar.*、widget.* 等）
+
 ## 0.4.1
 
 - 更新 README，优化文档结构
