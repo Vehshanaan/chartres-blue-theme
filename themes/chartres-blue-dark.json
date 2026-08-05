@@ -57,6 +57,9 @@
     "editorGutter.addedBackground": "#2D6B4F",
     "editorGutter.deletedBackground": "#9B1B30",
     "editorGutter.foldingControlForeground": "#6B7E9E",
+    "editorGutter.addedSecondaryBackground": "#2D6B4F80",
+    "editorGutter.modifiedSecondaryBackground": "#B8862D80",
+    "editorGutter.deletedSecondaryBackground": "#9B1B3080",
     "editorUnnecessaryCode.border": "#556888",
 
     "diffEditor.insertedTextBackground": "#2D6B4F33",
@@ -88,6 +91,15 @@
     "titleBar.inactiveForeground": "#6B7E9E",
     "titleBar.border": "#1E3460",
 
+    "commandCenter.background": "#1E3460",
+    "commandCenter.foreground": "#D6E2F0",
+    "commandCenter.border": "#1E3460",
+    "commandCenter.activeBackground": "#254888",
+    "commandCenter.activeForeground": "#FFFFFF",
+    "commandCenter.activeBorder": "#4070D0",
+    "commandCenter.inactiveForeground": "#6B7E9E",
+    "commandCenter.inactiveBorder": "#0D1836",
+
     "statusBar.background": "#122042",
     "statusBar.foreground": "#D6E2F0",
     "statusBar.border": "#1E3460",
@@ -99,9 +111,12 @@
     "statusBarItem.hoverBackground": "#1E3460",
     "statusBarItem.activeBackground": "#4070D033",
     "statusBarItem.prominentBackground": "#4070D0",
+    "statusBarItem.prominentForeground": "#FFFFFF",
     "statusBarItem.prominentHoverBackground": "#5080D8",
     "statusBarItem.errorBackground": "#9B1B30",
+    "statusBarItem.errorForeground": "#FFFFFF",
     "statusBarItem.warningBackground": "#B8862D",
+    "statusBarItem.warningForeground": "#FFFFFF",
 
     "panel.background": "#183052",
     "panel.foreground": "#D6E2F0",
@@ -123,6 +138,8 @@
     "tab.hoverBorder": "#4070D066",
     "tab.unfocusedActiveBorder": "#1E3460",
     "tab.unfocusedInactiveForeground": "#556888",
+    "tab.unfocusedHoverBackground": "#1E3460",
+    "tab.unfocusedHoverForeground": "#D6E2F0",
     "tab.lastPinnedBorder": "#223C6C",
 
     "list.activeSelectionBackground": "#4070D033",
@@ -174,6 +191,12 @@
     "scrollbarSlider.background": "#4070D040",
     "scrollbarSlider.hoverBackground": "#4070D060",
     "scrollbarSlider.activeBackground": "#4070D080",
+
+    "toolbar.hoverBackground": "#4070D033",
+    "toolbar.hoverOutline": "#4070D080",
+
+    "widget.border": "#223C6C",
+    "widget.shadow": "#00000040",
 
     "badge.background": "#4070D0",
     "badge.foreground": "#FFFFFF",
