@@ -1,9 +1,11 @@
 .vscode/**
 .git/**
 .gitignore
+.opencode/**
 release/**
 *.vsix
 node_modules/**
 demo/**
 docs/**
 .dev-notes/**
+windows/**
