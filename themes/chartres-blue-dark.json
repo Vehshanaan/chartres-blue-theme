@@ -36,8 +36,8 @@
     "editorLightBulbAutoFix.foreground": "#2D6B4F",
     "editorBracketHighlight.foreground1": "#80B0F0",
     "editorBracketHighlight.foreground2": "#C9A84C",
-    "editorBracketHighlight.foreground3": "#EF4147",
-    "editorBracketHighlight.foreground4": "#2D6B4F",
+    "editorBracketHighlight.foreground3": "#A87BC4",
+    "editorBracketHighlight.foreground4": "#4E9E70",
     "editorBracketHighlight.foreground5": "#B8862D",
     "editorBracketHighlight.foreground6": "#80B0F0",
     "editorOverviewRuler.border": "#0D1836",
@@ -228,7 +228,7 @@
     "terminalCursor.foreground": "#80B0F0",
     "terminal.selectionBackground": "#4070D04D",
 
-    "breadcrumb.foreground": "#7BB896",
+    "breadcrumb.foreground": "#B0A0DC",
     "breadcrumb.background": "#1A2C4E",
     "breadcrumb.focusForeground": "#D6E2F0",
     "breadcrumb.activeSelectionForeground": "#D6E2F0",
@@ -270,7 +270,7 @@
 
     "quickInput.background": "#152646",
     "quickInput.foreground": "#D6E2F0",
-    "quickInputList.focusBackground": "#63A87E",
+    "quickInputList.focusBackground": "#AE9464",
     "quickInputList.focusForeground": "#0F1E3E",
 
     "keybindingLabel.background": "#1E3460",

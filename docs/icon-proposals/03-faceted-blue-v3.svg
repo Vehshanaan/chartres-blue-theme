@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <clipPath id="oct"><path d="M64 4l51 30v60l-51 30-51-30V34z"/></clipPath>
+  </defs>
+  <!-- octagonal lead frame -->
+  <path d="M64 3l53 31v60l-53 31-53-31V34z" fill="#0E1B33"/>
+  <g clip-path="url(#oct)">
+    <rect width="128" height="128" fill="#1A2C4E"/>
+    <!-- large faceted field -->
+    <path d="M64 7L17 34l47 30z" fill="#5E90DA" stroke="#0E1B33" stroke-width="2"/>
+    <path d="M64 7l47 27-47 30z" fill="#2E4C9B" stroke="#0E1B33" stroke-width="2"/>
+    <path d="M17 34v60l47-30z" fill="#8FB0E0" stroke="#0E1B33" stroke-width="2"/>
+    <path d="M111 34v60L64 64z" fill="#4070D0" stroke="#0E1B33" stroke-width="2"/>
+    <path d="M17 94l47-30 47 30-47 27z" fill="#1A2C4E" stroke="#0E1B33" stroke-width="2"/>
+
+    <!-- nested baroque tracery -->
+    <circle cx="64" cy="64" r="48" fill="none" stroke="#C9A84C" stroke-width="2"/>
+    <circle cx="64" cy="64" r="42" fill="none" stroke="#0E1B33" stroke-width="3"/>
+    <circle cx="64" cy="64" r="31" fill="#2E4C9B" stroke="#C9A84C" stroke-width="2"/>
+    <g fill="#4668B6" stroke="#0E1B33" stroke-width="2">
+      <path d="M64 33c5 6 8 12 8 18 0 5-3 9-8 13-5-4-8-8-8-13 0-6 3-12 8-18z"/>
+      <path d="M95 64c-6 5-12 8-18 8-5 0-9-3-13-8 4-5 8-8 13-8 6 0 12 3 18 8z"/>
+      <path d="M64 95c-5-6-8-12-8-18 0-5 3-9 8-13 5 4 8 8 8 13 0 6-3 12-8 18z"/>
+      <path d="M33 64c6-5 12-8 18-8 5 0 9 3 13 8-4 5-8 8-13 8-6 0-12-3-18-8z"/>
+    </g>
+    <!-- gold scrollwork: flat, symmetrical, and aligned with the radial structure -->
+    <g fill="none" stroke="#C9A84C" stroke-width="2" stroke-linecap="round">
+      <path d="M40 40c-7 1-10 5-8 9 2 4 7 3 8-1 1-3-2-5-5-3"/>
+      <path d="M88 40c7 1 10 5 8 9-2 4-7 3-8-1-1-3 2-5 5-3"/>
+      <path d="M40 88c-7-1-10-5-8-9 2-4 7-3 8 1 1 3-2 5-5 3"/>
+      <path d="M88 88c7-1 10-5 8-9-2-4-7-3-8 1-1 3 2 5 5 3"/>
+    </g>
+    <g fill="#C9A84C" stroke="#0E1B33" stroke-width="1.5">
+      <path d="M64 39l4 5-4 5-4-5zM89 64l-5 4-5-4 5-4zM64 89l-4-5 4-5 4 5zM39 64l5-4 5 4-5 4z"/>
+      <circle cx="32" cy="32" r="3"/><circle cx="96" cy="32" r="3"/><circle cx="32" cy="96" r="3"/><circle cx="96" cy="96" r="3"/>
+    </g>
+    <!-- central faceted jewel, integrated into the window's lead lines -->
+    <path d="M64 48l12 8v16l-12 8-12-8V56z" fill="#C9A84C" stroke="#0E1B33" stroke-width="3"/>
+    <path d="M64 53l6 5v7l-6 5-6-5v-7z" fill="#A05810" stroke="#0E1B33" stroke-width="2"/>
+    <path d="M64 56v14M58 58l12 10M70 58L58 68" fill="none" stroke="#0E1B33" stroke-width="1.5"/>
+    <circle cx="64" cy="63" r="2.5" fill="#9B1B30"/>
+  </g>
+  <path d="M64 3l53 31v60l-53 31-53-31V34z" fill="none" stroke="#0E1B33" stroke-width="3"/>
+</svg>

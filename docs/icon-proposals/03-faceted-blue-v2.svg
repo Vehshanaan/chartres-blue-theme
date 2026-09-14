@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <path d="M64 5l48 28v62l-48 28-48-28V33z" fill="#0E1B33"/>
+  <path d="M64 12v104l41-24V36z" fill="#1A2C4E"/>
+  <path d="M64 12L23 36l41 80z" fill="#2E4C9B"/>
+  <g stroke="#0E1B33" stroke-width="2">
+    <path d="M64 12L39 51l25 65 25-65z" fill="#4668B6"/>
+    <path d="M39 51L23 36l41-24z" fill="#8FB0E0"/>
+    <path d="M89 51l16-15-41-24z" fill="#5E90DA"/>
+    <path d="M39 51l-16 41 41 24z" fill="#2E4C9B"/>
+    <path d="M89 51l16 41-41 24z" fill="#4070D0"/>
+    <path d="M64 12v104M23 36l82 56M105 36L23 92" fill="none"/>
+    <!-- the gold accent is now a structural lozenge at the facet junction -->
+    <path d="M64 49l9 13-9 13-9-13z" fill="#C9A84C"/>
+    <path d="M64 55l4 7-4 7-4-7z" fill="#A05810" stroke="none"/>
+  </g>
+  <circle cx="64" cy="62" r="2.5" fill="#9B1B30"/>
+</svg>

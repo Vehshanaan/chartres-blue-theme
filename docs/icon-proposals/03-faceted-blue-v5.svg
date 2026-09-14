@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Eight-way balanced rose window. All ornament is part of the pane layout. -->
+  <path d="M64 3l53 31v60l-53 31-53-31V34z" fill="#0E1B33"/>
+  <path d="M64 9l47 28v54l-47 28-47-28V37z" fill="#1A2C4E" stroke="#0E1B33" stroke-width="3"/>
+
+  <!-- equal radial outer panes, avoiding the heavy top/bottom bias of v4 -->
+  <g stroke="#0E1B33" stroke-width="2" stroke-linejoin="round">
+    <polygon points="64,9 78,36 64,48 50,36" fill="#5E90DA"/>
+    <polygon points="91,23 91,51 75,57 78,36" fill="#4668B6"/>
+    <polygon points="111,37 92,51 75,57 91,23" fill="#2E4C9B"/>
+    <polygon points="111,91 92,77 75,71 91,105" fill="#4070D0"/>
+    <polygon points="91,105 91,77 75,71 78,92" fill="#4668B6"/>
+    <polygon points="64,119 78,92 64,80 50,92" fill="#5E90DA"/>
+    <polygon points="37,105 37,77 53,71 50,92" fill="#8FB0E0"/>
+    <polygon points="17,91 36,77 53,71 37,105" fill="#2E4C9B"/>
+    <polygon points="17,37 36,51 53,57 37,23" fill="#8FB0E0"/>
+    <polygon points="37,23 37,51 53,57 50,36" fill="#4668B6"/>
+
+    <!-- one repeated eight-petal unit; each petal is a pane, not an overlay -->
+    <polygon points="64,20 72,37 64,49 56,37" fill="#F5F0E8"/>
+    <polygon points="95,33 78,41 66,49 79,57" fill="#C9A84C"/>
+    <polygon points="108,64 91,72 79,64 91,56" fill="#F5F0E8"/>
+    <polygon points="95,95 78,87 66,79 79,71" fill="#C9A84C"/>
+    <polygon points="64,108 72,91 64,79 56,91" fill="#F5F0E8"/>
+    <polygon points="33,95 50,87 62,79 49,71" fill="#C9A84C"/>
+    <polygon points="20,64 37,56 49,64 37,72" fill="#F5F0E8"/>
+    <polygon points="33,33 50,41 62,49 49,57" fill="#C9A84C"/>
+
+    <!-- central eight-sided medallion, aligned to the petal rhythm -->
+    <polygon points="64,48 75,53 80,64 75,75 64,80 53,75 48,64 53,53" fill="#2E4C9B"/>
+    <polygon points="64,54 71,57 74,64 71,71 64,74 57,71 54,64 57,57" fill="#C9A84C"/>
+    <polygon points="64,59 69,62 69,66 64,69 59,66 59,62" fill="#A05810"/>
+    <polygon points="64,61 67,63 67,65 64,67 61,65 61,63" fill="#9B1B30"/>
+  </g>
+  <path d="M64 3l53 31v60l-53 31-53-31V34z" fill="none" stroke="#0E1B33" stroke-width="3"/>
+</svg>

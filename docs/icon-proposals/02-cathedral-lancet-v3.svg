@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs><clipPath id="c"><path d="M64 7C35 25 20 48 20 76a44 44 0 0 0 88 0C108 48 93 25 64 7z"/></clipPath></defs>
+  <path d="M64 4C32 23 16 48 16 77a48 48 0 0 0 96 0C112 48 96 23 64 4z" fill="#0E1B33"/>
+  <g clip-path="url(#c)">
+    <rect width="128" height="128" fill="#2E4C9B"/>
+    <!-- two large, water-like facets: the diagonal is contained inside the drop -->
+    <path d="M64 7L20 76a44 44 0 0 0 44 44z" fill="#F5F0E8"/>
+    <path d="M64 7l44 69a44 44 0 0 1-44 44z" fill="#1A2C4E"/>
+    <path d="M64 7L20 76h18l26-39 26 39h18z" fill="#8FB0E0" opacity=".9"/>
+    <g fill="none" stroke="#0E1B33" stroke-width="3">
+      <path d="M64 10v111M22 77h84M36 37l56 80M92 37l-56 80"/>
+    </g>
+    <!-- a simple blue inner flame, aligned to the same vertical axis -->
+    <path d="M64 25c-10 13-16 25-16 39 0 15 7 27 16 39 9-12 16-24 16-39 0-14-6-26-16-39z" fill="#2E4C9B" stroke="#0E1B33" stroke-width="3"/>
+    <path d="M64 43c-4 7-7 14-7 21 0 8 3 15 7 21 4-6 7-13 7-21 0-7-3-14-7-21z" fill="#8FB0E0"/>
+    <circle cx="64" cy="86" r="5" fill="#C9A84C"/>
+  </g>
+</svg>

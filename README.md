@@ -1,5 +1,47 @@
 # Chartres Blue Cathedral Theme
 
+A VS Code color theme inspired by the stained glass of Chartres Cathedral — a dark and a light theme built around its legendary cobalt blue.
+
+## Themes
+
+- **Chartres Blue Dark** — a dark theme anchored on cobalt blue, with low-contrast warm accents for long coding sessions
+- **Chartres Blue Light** — a light theme on warm parchment white, with jewel-toned syntax highlighting in the manner of an illuminated manuscript
+
+## Install
+
+Search **Chartres Blue Cathedral Theme** in the VS Code Extensions view, or install from the command line:
+
+```bash
+code --install-extension Vehshanaan.chartres-blue-theme-vscode
+```
+
+You can also install it straight from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=Vehshanaan.chartres-blue-theme-vscode).
+
+## Usage
+
+After installing, pick a theme via `Preferences: Color Theme` (`Ctrl+K Ctrl+T`):
+
+- `Chartres Blue Dark`
+- `Chartres Blue Light`
+
+## Development
+
+```bash
+# Clone the repository
+git clone https://github.com/Vehshanaan/chartres-blue-theme.git
+cd chartres-blue-theme
+
+# Open in VS Code and press F5 to launch the Extension Development Host
+```
+
+## License
+
+MIT © 2025 Vehshanaan
+
+---
+
+# 沙特尔蓝大教堂主题
+
 一套灵感来源于沙特尔大教堂（Chartres Cathedral）彩绘玻璃标志性钴蓝色的 VS Code 主题，包含深色与浅色两套。
 
 ## 主题

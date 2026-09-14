@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- A single-plane stained-glass mosaic: every coloured shape is a pane. -->
+  <path d="M64 3l53 31v60l-53 31-53-31V34z" fill="#0E1B33"/>
+  <path d="M64 9l47 28v54l-47 28-47-28V37z" fill="#1A2C4E" stroke="#0E1B33" stroke-width="3"/>
+
+  <!-- outer eight-pointed tracery, all pieces meet at their edges -->
+  <g stroke="#0E1B33" stroke-width="2" stroke-linejoin="round">
+    <polygon points="64,9 78,37 64,50 50,37" fill="#5E90DA"/>
+    <polygon points="111,37 83,51 78,37" fill="#2E4C9B"/>
+    <polygon points="111,91 83,77 78,91" fill="#4070D0"/>
+    <polygon points="64,119 50,91 64,78 78,91" fill="#2E4C9B"/>
+    <polygon points="17,91 45,77 50,91" fill="#8FB0E0"/>
+    <polygon points="17,37 45,51 50,37" fill="#4668B6"/>
+    <polygon points="17,37 45,51 45,77 17,91" fill="#8FB0E0"/>
+    <polygon points="111,37 83,51 83,77 111,91" fill="#4070D0"/>
+
+    <!-- eight pointed baroque petals, tessellated into the field -->
+    <polygon points="64,18 72,38 64,49 56,38" fill="#F5F0E8"/>
+    <polygon points="88,40 80,56 66,50 78,38" fill="#C9A84C"/>
+    <polygon points="88,88 80,72 66,78 78,90" fill="#C9A84C"/>
+    <polygon points="64,110 72,90 64,79 56,90" fill="#F5F0E8"/>
+    <polygon points="40,88 48,72 62,78 50,90" fill="#C9A84C"/>
+    <polygon points="40,40 48,56 62,50 50,38" fill="#C9A84C"/>
+    <polygon points="64,50 80,56 80,72 64,78 48,72 48,56" fill="#2E4C9B"/>
+
+    <!-- central faceted jewel is itself a pane, not an ornament on top -->
+    <polygon points="64,52 74,58 74,70 64,76 54,70 54,58" fill="#A05810"/>
+    <polygon points="64,55 69,59 69,65 64,68 59,65 59,59" fill="#C9A84C"/>
+    <polygon points="64,58 67,60 67,64 64,66 61,64 61,60" fill="#9B1B30"/>
+
+  </g>
+  <path d="M64 3l53 31v60l-53 31-53-31V34z" fill="none" stroke="#0E1B33" stroke-width="3"/>
+</svg>
