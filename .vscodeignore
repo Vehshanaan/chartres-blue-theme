@@ -9,3 +9,7 @@ demo/**
 docs/**
 .dev-notes/**
 windows/**
+# README 用的截图：vsce 打包时会把 readme.md 里的相对图片路径改写成
+# https://github.com/<repo>/raw/HEAD/<path>，Marketplace 从仓库取图，
+# 打进包里只是死重（每个约 200 KB）。
+image/**
