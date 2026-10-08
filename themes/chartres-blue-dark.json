@@ -77,12 +77,12 @@
     "sideBarSectionHeader.border": "#1E3460",
 
     "activityBar.background": "#0F1E3E",
-    "activityBar.foreground": "#D6E2F0",
+    "activityBar.foreground": "#80B0F0",
     "activityBar.inactiveForeground": "#6B7E9E",
     "activityBar.border": "#1E3460",
     "activityBarBadge.background": "#9B1B30",
     "activityBarBadge.foreground": "#FFFFFF",
-    "activityBar.activeBorder": "#4070D0",
+    "activityBar.activeBorder": "#80B0F0",
     "activityBar.activeFocusBorder": "#80B0F0",
 
     "titleBar.activeBackground": "#0F1E3E",
@@ -141,6 +141,26 @@
     "tab.unfocusedHoverBackground": "#1E3460",
     "tab.unfocusedHoverForeground": "#D6E2F0",
     "tab.lastPinnedBorder": "#223C6C",
+
+    "editorGroupHeader.tabsBackground": "#0D1836",
+    "editorGroupHeader.connectedTabsBackground": "#0D1836",
+    "editorGroupHeader.tabsBorder": "#1E3460",
+
+    "modernTab.activeBackground": "#1A2C4E",
+    "modernTab.activeForeground": "#D6E2F0",
+    "modernTab.hoverBackground": "#1E3460",
+    "modernTab.hoverForeground": "#D6E2F0",
+    "modernEditorTab.activeBackground": "#1A2C4E",
+    "modernEditorTab.inactiveBackground": "#0D1836",
+    "modernEditorTab.hoverBackground": "#1E3460",
+    "modernEditorTab.activeHoverBackground": "#1E3460",
+    "modernEditorTab.activeForeground": "#D6E2F0",
+    "modernEditorTab.hoverForeground": "#D6E2F0",
+
+    "modernActivityBarItem.activeBackground": "#0F1E3E",
+    "modernActivityBarItem.activeForeground": "#80B0F0",
+    "modernActivityBarItem.hoverBackground": "#1E3460",
+    "modernActivityBarItem.hoverForeground": "#D6E2F0",
 
     "list.activeSelectionBackground": "#4070D033",
     "list.activeSelectionForeground": "#D6E2F0",
