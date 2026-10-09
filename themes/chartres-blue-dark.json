@@ -262,7 +262,7 @@
     "menu.separatorBackground": "#223C6C",
     "menu.border": "#1E3460",
 
-    "gitDecoration.addedResourceForeground": "#3D8B63",
+    "gitDecoration.addedResourceForeground": "#7FC8A0",
     "gitDecoration.modifiedResourceForeground": "#C9A84C",
     "gitDecoration.deletedResourceForeground": "#C7364A",
     "gitDecoration.untrackedResourceForeground": "#80B0F0",
